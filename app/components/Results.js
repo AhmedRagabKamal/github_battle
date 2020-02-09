@@ -8,6 +8,42 @@ import {
   FaUserFriends
 } from 'react-icons/fa';
 import Card from './Card';
+import PropTypes from 'prop-types';
+
+function ProfileList({ profile }) {
+  return (
+    <ul className='card-list'>
+      <li>
+        <FaUser size={22} color='red' />
+        {profile.name}
+      </li>
+      {profile.location && (
+        <li>
+          <FaCompass size={22} color='gray' />
+          {profile.location.toLocaleString()}
+        </li>
+      )}
+      {profile.company && (
+        <li>
+          <FaBriefcase size={22} color='green' />
+          {profile.company.toLocaleString()}
+        </li>
+      )}
+      <li>
+        <FaUsers size={22} color='blue' />
+        {profile.followers.toLocaleString()} followers
+      </li>
+      <li>
+        <FaUserFriends size={22} color='light-red' />
+        {profile.following.toLocaleString()} following
+      </li>
+    </ul>
+  );
+}
+
+ProfileList.propTypes = {
+  profile: PropTypes.object.isRequired
+};
 
 class Results extends Component {
   constructor(props) {
@@ -50,71 +86,30 @@ class Results extends Component {
             subHeader={`Score: ${winner.score}`}
             href={`https://github.com/${winner.profile.login}`}
           >
-            <ul className='card-list'>
-              <li>
-                <FaUser size={22} color='red' />
-                {winner.profile.name}
-              </li>
-              {winner.profile.location && (
-                <li>
-                  <FaCompass size={22} color='gray' />
-                  {winner.profile.location.toLocaleString()}
-                </li>
-              )}
-              {winner.profile.company && (
-                <li>
-                  <FaBriefcase size={22} color='green' />
-                  {winner.profile.company.toLocaleString()}
-                </li>
-              )}
-              <li>
-                <FaUsers size={22} color='blue' />
-                {winner.profile.followers.toLocaleString()} followers
-              </li>
-              <li>
-                <FaUserFriends size={22} color='light-red' />
-                {winner.profile.following.toLocaleString()} following
-              </li>
-            </ul>
+            <ProfileList profile={winner.profile} />
           </Card>
           <Card
-            header={loser.score === loser.score ? 'Tiny' : 'loser'}
+            header={winner.score === loser.score ? 'Tiny' : 'loser'}
             avatar={loser.profile.avatar_url}
             name={loser.profile.login}
             subHeader={`Score: ${loser.score}`}
             href={`https://github.com/${loser.profile.login}`}
           >
-            <ul className='card-list'>
-              <li>
-                <FaUser size={22} color='red' />
-                {loser.profile.name}
-              </li>
-              {loser.profile.location && (
-                <li>
-                  <FaCompass size={22} color='gray' />
-                  {loser.profile.location.toLocaleString()}
-                </li>
-              )}
-              {loser.profile.company && (
-                <li>
-                  <FaBriefcase size={22} color='green' />
-                  {loser.profile.company.toLocaleString()}
-                </li>
-              )}
-              <li>
-                <FaUsers size={22} color='blue' />
-                {loser.profile.followers.toLocaleString()} followers
-              </li>
-              <li>
-                <FaUserFriends size={22} color='light-red' />
-                {loser.profile.following.toLocaleString()} following
-              </li>
-            </ul>
+            <ProfileList profile={loser.profile} />
           </Card>
         </div>
+        <button className='btn btn-dark btn-space' onClick={this.props.onReset}>
+          Reset
+        </button>
       </React.Fragment>
     );
   }
 }
+
+Results.propTypes = {
+  playerOne: PropTypes.string.isRequired,
+  playerTwo: PropTypes.string.isRequired,
+  onReset: PropTypes.func.isRequired
+};
 
 export default Results;
