@@ -9,6 +9,7 @@ import {
 } from 'react-icons/fa';
 import Card from './Card';
 import PropTypes from 'prop-types';
+import Loading from './Loading';
 
 function ProfileList({ profile }) {
   return (
@@ -69,7 +70,7 @@ class Results extends Component {
   render() {
     const { winner, loser, loading, error } = this.state;
     if (loading) {
-      return <p>Loading ....</p>;
+      return <Loading />;
     }
 
     if (error) {
